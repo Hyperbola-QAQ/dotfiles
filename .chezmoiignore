@@ -1,0 +1,23 @@
+# 默认忽略列表
+*.git
+*.swp
+.DS_Store
+*.log
+
+{{- /* 逻辑 1: 如果主机名是 Hyperbola-PC，忽略 .config/omarchy */ -}}
+{{- if eq .chezmoi.hostname "Hyperbola-PC" }}
+.config/omarchy
+.config/omarchy/*
+{{- end }}
+
+{{- /* 逻辑 2: 如果操作系统是 Debian，忽略 .config/tmux */ -}}
+{{- if eq .chezmoi.os "debian" }}
+.config/tmux
+.config/tmux/*
+{{- end }}
+
+{{- /* 逻辑 3: 如果是 macOS，忽略 Linux 特有配置 */ -}}
+{{- if eq .chezmoi.os "darwin" }}
+.config/alacritty
+.config/nvim/init.vim
+{{- end }}
