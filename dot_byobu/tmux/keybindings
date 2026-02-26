@@ -1,0 +1,13 @@
+# 启用 Ctrl+b 作为前缀键
+set-option -g prefix C-b
+bind-key C-b send-prefix
+
+# 保留 F12 作为备用前缀键（Byobu 默认）
+bind-key F12 select-pane -t :.+
+
+# 常用 Tmux 快捷键绑定
+bind-key c new-window
+bind-key % split-window -h
+bind-key '"' split-window -v
+bind-key d detach
+bind-key ? list-keys

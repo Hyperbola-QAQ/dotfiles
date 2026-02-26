@@ -1,0 +1,27 @@
+{
+  "modules-left": [
+    "custom/omarchy",
+    "hyprland/workspaces",
+    "hyprland/window",
+    "mpris"
+  ],
+  "modules-center": [
+    "clock",
+    "custom/weather",
+    "custom/updatespacman",
+    "custom/update",
+    "custom/voxtype"
+  ],
+  "modules-right": [
+    "group/tray-expander",
+    "idle_inhibitor",
+    "network",
+    //"temperature",
+    // "disk",
+    "memory",
+    // "custom/gpu",
+    "cpu",
+    "pulseaudio",
+    "battery"
+  ]
+}

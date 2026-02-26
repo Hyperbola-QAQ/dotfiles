@@ -1,0 +1,4 @@
+registry=https://registry.npmmirror.com
+store-dir=/home/hyperbola/.local/share/pnpm/store
+auto-install-peers=false
+package-import-method=auto

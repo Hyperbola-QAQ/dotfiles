@@ -1,0 +1,5 @@
+include "%H/.local/share/omarchy/default/xcompose"
+
+# Identification
+<Multi_key> <space> <n> : "Hyperbola_QAQ"
+<Multi_key> <space> <e> : "2656131980@qq.com"

@@ -1,0 +1,15 @@
+Host server
+    HostName server.hyperbola.cc
+    User hyperbola
+
+Host pc
+    HostName pc.hyperbola.cc
+    User hyperbola
+
+Host laptop
+    HostName laptop.hyperbola.cc
+    User hyperbola
+
+Host txy
+    HostName txy.hyperbola.cc
+    User hyperbola
