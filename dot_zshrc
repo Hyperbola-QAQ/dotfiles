@@ -14,6 +14,9 @@ plugins=(git fast-syntax-highlighting extract zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 # Load omarchy-zsh configuration
 if [[ -d /usr/share/omarchy-zsh/conf.d ]]; then
   for config in /usr/share/omarchy-zsh/conf.d/*.zsh; do
@@ -27,9 +30,6 @@ if [[ -d /usr/share/omarchy-zsh/functions ]]; then
     [[ -f "$func" ]] && source "$func"
   done
 fi
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 alias vim='nvim'
 alias mkdir="mkdir -p"
