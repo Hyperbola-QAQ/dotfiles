@@ -7,7 +7,7 @@
   ],
   "modules-center": [
     "clock",
-    "custom/weather",
+    //"custom/weather",
     "custom/updatespacman",
     "custom/update",
     "custom/voxtype"
