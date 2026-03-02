@@ -17,19 +17,12 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Load omarchy-zsh configuration
-if [[ -d $HOME/.config/omarchy/omarchy-zsh/conf.d ]]; then
-  for config in $HOME/.config/omarchy/omarchy-zsh/conf.d/*.zsh; do
-    [[ -f "$config" ]] && source "$config"
-  done
-fi
 
-# Load omarchy-zsh functions and aliases
-if [[ -d $HOME/.config/omarchy/omarchy-zsh/functions ]]; then
-  for func in $HOME/.config/omarchy/omarchy-zsh/functions/*.zsh; do
-    [[ -f "$func" ]] && source "$func"
-  done
-fi
+# Load zsh options, keybindings, and completion
+[[ -f /usr/share/omarchy-zsh/shell/zoptions ]] && source /usr/share/omarchy-zsh/shell/zoptions
+
+# Load shared shell configuration (aliases, functions, environment, tool init)
+[[ -f /usr/share/omarchy-zsh/shell/all ]] && source /usr/share/omarchy-zsh/shell/all
 
 alias vim='nvim'
 alias mkdir="mkdir -p"
