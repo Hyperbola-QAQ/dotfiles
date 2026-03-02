@@ -19,10 +19,10 @@ source $ZSH/oh-my-zsh.sh
 
 
 # Load zsh options, keybindings, and completion
-[[ -f /usr/share/omarchy-zsh/shell/zoptions ]] && source /usr/share/omarchy-zsh/shell/zoptions
+[[ -f $HOME/.config/omarchy/omarchy-zsh/shell/zoptions ]] && source $HOME/.config/omarchy/omarchy-zsh/shell/zoptions
 
 # Load shared shell configuration (aliases, functions, environment, tool init)
-[[ -f /usr/share/omarchy-zsh/shell/all ]] && source /usr/share/omarchy-zsh/shell/all
+[[ -f $HOME/.config/omarchy/omarchy-zsh/shell/all ]] && source $HOME/.config/omarchy/oomarchy-zsh/shell/all
 
 alias vim='nvim'
 alias mkdir="mkdir -p"
