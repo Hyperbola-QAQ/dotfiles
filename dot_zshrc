@@ -22,7 +22,7 @@ source $ZSH/oh-my-zsh.sh
 [[ -f $HOME/.config/omarchy/omarchy-zsh/shell/zoptions ]] && source $HOME/.config/omarchy/omarchy-zsh/shell/zoptions
 
 # Load shared shell configuration (aliases, functions, environment, tool init)
-[[ -f $HOME/.config/omarchy/omarchy-zsh/shell/all ]] && source $HOME/.config/omarchy/oomarchy-zsh/shell/all
+[[ -f $HOME/.config/omarchy/omarchy-zsh/shell/all ]] && source $HOME/.config/omarchy/omarchy-zsh/shell/all
 
 alias vim='nvim'
 alias mkdir="mkdir -p"
