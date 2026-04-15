@@ -1,12 +1,9 @@
+show_channel_urls: true
+auto_activate_base: false
+channel_priority: flexible
+
 channels:
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r/
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
   - conda-forge
 mirrored_channels:
   conda-forge:
-    - https://conda.anaconda.org/conda-forge
-    - https://prefix.dev/conda-forge
-
-show_channel_urls: true
-auto_activate: false
+    - https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge
