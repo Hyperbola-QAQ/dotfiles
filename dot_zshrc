@@ -97,6 +97,11 @@ fi
 unset __mamba_setup
 # <<< mamba initialize <<<
 
+
+export ANDROID_HOME=/opt/android-sdk
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+
 quark() {
     "$HOME/Projects/kuake_sdk/dist/kuake-v1.3.8-linux-amd64" -c "$HOME/Projects/kuake_sdk/dist/config.json" "$@"
 }
