@@ -1,0 +1,7 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+source "$HOME/.config/omarchy/omarchy-zsh/shell/envs"
+source "$HOME/.config/omarchy/omarchy-zsh/shell/aliases"
+source "$HOME/.config/omarchy/omarchy-zsh/shell/functions"
+source "$HOME/.config/omarchy/omarchy-zsh/shell/inits"

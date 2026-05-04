@@ -15,6 +15,9 @@ state_file = "auto"
 enabled = false
 
 [audio]
+
+# Pause MPRIS media players during recording
+pause_media = true
 # Audio input device ("default" uses system default)
 # List devices with: pactl list sources short
 device = "default"
