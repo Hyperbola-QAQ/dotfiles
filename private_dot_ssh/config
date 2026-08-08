@@ -13,3 +13,7 @@ Host laptop
 Host txy
     HostName txy.hyperbola.cc
     User hyperbola
+
+Host aly
+    HostName aly.hyperbola.cc
+    User hyperbola

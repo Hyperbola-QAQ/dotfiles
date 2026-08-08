@@ -6,14 +6,37 @@
 
 {{- /* 逻辑 1: 如果主机名是 Hyperbola-PC，忽略 .config/omarchy */ -}}
 {{- if eq .chezmoi.hostname "Hyperbola-PC" }}
-.config/omarchy
-.config/omarchy/*
+
 {{- end }}
 
-{{- /* 逻辑 2: 如果操作系统是 Debian，忽略 .config/tmux */ -}}
+{{- /* 逻辑 2: 如果操作系统是 Debian，忽略 -}}
 {{- if eq .chezmoi.os "debian" }}
 .config/tmux
 .config/tmux/*
+.config/hypr
+.config/hypr/*
+.config/hyprland-preview-share-picker
+.config/hyprland-preview-share-picker/*
+.config/waybar
+.config/waybar/*
+.config/sway
+.config/sway/*
+.config/elephant
+.config/elephant/*
+.config/voxtype
+.config/voxtype/*
+.config/mise
+.config/mise/*
+.config/fastfetch
+.config/fastfetch/*
+.config/omarchy/branding
+.config/omarchy/branding/*
+.config/omarchy/hooks
+.config/omarchy/hooks/*
+.config/omarchy/themes
+.config/omarchy/themes/*
+.XCompose
+
 {{- end }}
 
 {{- /* 逻辑 3: 如果是 macOS，忽略 Linux 特有配置 */ -}}
