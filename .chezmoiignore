@@ -29,12 +29,6 @@
 .config/mise/*
 .config/fastfetch
 .config/fastfetch/*
-.config/omarchy/branding
-.config/omarchy/branding/*
-.config/omarchy/hooks
-.config/omarchy/hooks/*
-.config/omarchy/themes
-.config/omarchy/themes/*
 .XCompose
 
 {{- end }}
