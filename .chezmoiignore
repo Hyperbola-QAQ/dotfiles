@@ -4,12 +4,19 @@
 .DS_Store
 *.log
 
-# 逻辑 1: 如果主机名是 Hyperbola-PC
-#{{- if eq .chezmoi.hostname "Hyperbola-PC" }}
+# 如果主机名是 Hyperbola-PC
+{{- if eq .chezmoi.hostname "Hyperbola-PC" }}
+.config/omarchy/current/
+.config/omarchy/current/*
+{{- end }}
 
-#{{- end }}
+# 如果主机名是 Hyperbola-Laptop
+{{- if eq .chezmoi.hostname "Hyperbola-Laptop" }}
+.config/omarchy/current/
+.config/omarchy/current/*
+{{- end }}
 
-# 逻辑 2: 如果操作系统是 Debian
+# 如果操作系统是 Debian
 {{- if eq .chezmoi.osRelease.id "debian" }}
 .config/tmux
 .config/tmux/*
