@@ -10,6 +10,14 @@ Host laptop
     HostName laptop.hyperbola.cc
     User hyperbola
 
+Host win
+    HostName win.hyperbola.cc
+    User hyperbola
+
+Host wsl
+    HostName wsl.hyperbola.cc
+    User hyperbola
+
 Host txy
     HostName txy.hyperbola.cc
     User hyperbola
