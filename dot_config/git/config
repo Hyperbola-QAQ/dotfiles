@@ -1,38 +1,212 @@
-# See https://git-scm.com/docs/git-config
+# ============================================================
+#  Git 全局配置文件
+#  ~/.gitconfig
+#  参考: https://git-scm.com/docs/git-config
+# ============================================================
 
+# ============================================================
+#  核心设置
+# ============================================================
+[core]
+	# 默认编辑器
+	editor = nvim
+	# 提交时 CRLF 转为 LF（Linux/macOS 适用）
+	autocrlf = input
+	# 检测不可逆的 CRLF 转换并警告
+	safecrlf = warn
+	# 启用文件系统缓存
+	fscache = true
+	# 预加载索引加速 git status
+	preloadindex = true
+	# 忽略文件权限变化
+	filemode = false
+	# 忽略文件大小写（Windows/macOS）
+	ignorecase = true
+	# 压缩级别 1-9，1 最快
+	compression = 1
+	# 启用未跟踪缓存
+	untrackedCache = true
+
+# ============================================================
+#  别名
+# ============================================================
 [alias]
+	# 基础操作
 	co = checkout
 	br = branch
 	ci = commit
 	st = status
+	sw = switch
+	rst = restore
+
+	# 日志
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	ll = log --oneline --graph --decorate --all
+	tree = log --graph --pretty=format:'%C(red)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+	# 提交操作
+	amend = commit --amend --no-edit
+	amendm = commit --amend -m
+	unstage = restore --staged
+	discard = restore
+
+	# 分支维护
+	cleanup = !git branch --merged | grep -v '\\*\\|main\\|master\\|dev' | xargs -n 1 git branch -d
+	pruneb = !git remote prune origin && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -d
+
+	# 仓库维护
+	prune = fetch --prune
+
+	# 统计
+	who = shortlog -sne --all
+
+	# 配置查看
+	cfg = config --list --show-origin
+
+# ============================================================
+#  初始化
+# ============================================================
 [init]
 	defaultBranch = main
+
+# ============================================================
+#  拉取
+# ============================================================
 [pull]
-	rebase = true 			 # Rebase (instead of merge) on pull
+	rebase = true
+	ff = only
+
+# ============================================================
+#  推送
+# ============================================================
 [push]
-	autoSetupRemote = true   # Automatically set upstream branch on push
-[diff]
-	algorithm = histogram    # Clearer diffs on moved/edited lines
-	colorMoved = plain       # Highlight moved blocks in diffs
-	mnemonicPrefix = true    # More intuitive refs in diff output
-[commit]
-	verbose = true           # Include diff comment in commit message template
-[column]
-	ui = auto 			     # Output in columns when possible
-[branch]
-	sort = -committerdate    # Sort branches by most recent commit first
-[tag]
-	sort = -version:refname  # Sort version numbers as you would expect
-[rerere]
-	enabled = true           # Record and reuse conflict resolutions
-	autoupdate = true        # Apply stored conflict resolutions automatically
-[user]
-	name = Hyperbola_QAQ
-	email = 2656131980@qq.com
-[fetch]
+	autoSetupRemote = true
+	default = current
 	prune = true
+	followTags = true
+
+# ============================================================
+#  差异
+# ============================================================
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+	submodule = log
+
+# ============================================================
+#  合并
+# ============================================================
+[merge]
+	conflictstyle = zdiff3
+
+# ============================================================
+#  提交
+# ============================================================
+[commit]
+	verbose = true
+
+# ============================================================
+#  重用冲突解决记录
+# ============================================================
+[rerere]
+	enabled = true
+	autoupdate = true
+
+# ============================================================
+#  分支
+# ============================================================
+[branch]
+	sort = -committerdate
+	autoSetupMerge = always
+
+# ============================================================
+#  标签
+# ============================================================
+[tag]
+	sort = -version:refname
+
+# ============================================================
+#  日志
+# ============================================================
+[log]
+	abbrevCommit = false
+	date = relative
+
+# ============================================================
+#  状态
+# ============================================================
+[status]
+	submodulesummary = true
+	showUntrackedFiles = all
+
+# ============================================================
+#  终端输出
+# ============================================================
+[column]
+	ui = auto
+
+[color]
+	ui = auto
+
+[color "branch"]
+	current = green reverse
+	local = yellow
+	remote = red
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+
+[color "status"]
+	added = green
+	changed = red
+	untracked = cyan
+
+# ============================================================
+#  凭证
+# ============================================================
+[credential]
+	helper = cache --timeout=3600
+
+# ============================================================
+#  交互
+# ============================================================
+[interactive]
+	singlekey = true
+
+# ============================================================
+#  打包优化（大仓库）
+# ============================================================
+[pack]
+	threads = 8
+	cache = 256m
+	windowMemory = 256m
+	bigFileThreshold = 50m
+
+# ============================================================
+#  HTTP
+# ============================================================
+[http]
+	lowSpeedLimit = 1000
+	lowSpeedTime = 30
+	sslVerify = true
+
+# ============================================================
+#  Git LFS
+# ============================================================
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
+# ============================================================
+#  用户信息
+# ============================================================
+[user]
+	name = Hyperbola_QAQ
+	email = 2656131980@qq.com

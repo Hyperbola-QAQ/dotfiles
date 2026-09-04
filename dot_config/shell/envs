@@ -1,0 +1,29 @@
+export EDITOR="nvim"
+export PATH="$PATH:$HOME/.local/bin"
+export SUDO_EDITOR="$EDITOR"
+export BAT_THEME=ansi
+export MANROFFOPT="-c"
+
+
+
+# 
+export UV_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
+export UV_NO_MANAGED_PYTHON=1
+export UV_PYTHON_INSTALL_MIRROR="https://ghfast.top/https://github.com/astral-sh/python-build-standalone/releases/download"
+export PATH="$HOME/.local/bin:$PATH"
+export PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple/"
+export PIP_TRUSTED_HOST="pypi.tuna.tsinghua.edu.cn"
+
+
+export LIBVIRT_DEFAULT_URI=qemu:///system
+
+export GOPATH="$HOME/.go"
+export PATH="$PATH:$GOPATH/bin"
+export GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+
+
+export ANDROID_HOME=/opt/android-sdk
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+
+export ANSIBLE_CONFIG="$HOME/.config/ansible/ansible.cfg"

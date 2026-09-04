@@ -1,0 +1,41 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# zmodload zsh/zprof
+
+export DISABLE_AUTO_UPDATE="true"
+export ZSH_DISABLE_COMPFIX="true"
+export ZSH="$HOME/.oh-my-zsh"
+# ZSH_THEME="powerlevel10k/powerlevel10k"
+
+plugins=(fast-syntax-highlighting extract zsh-autosuggestions)
+
+source $ZSH/oh-my-zsh.sh
+
+# Load zsh options, keybindings, and completion
+[[ -f $HOME/.config/shell/zoptions ]] && source $HOME/.config/shell/zoptions
+# Load shared shell configuration (aliases, functions, environment, tool init)
+[[ -f $HOME/.config/shell/all ]] && source $HOME/.config/shell/all
+
+# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=12"
+
+{{- if eq .chezmoi.osRelease.id "none" }}
+quark() {
+    "$HOME/Projects/kuake_sdk/dist/kuake-v1.5.0-linux-amd64" "$@"
+}
+{{- end }}
+
+{{- if eq .chezmoi.osRelease.id "omarchy" }}
+# 切换到 192.168.86.12 网关
+clashon() {
+    sudo ip route replace default via 192.168.86.12 dev wlan0
+    echo "默认路由已切换至 192.168.86.12 (wlan0)"
+}
+# 切换到 192.168.86.1 网关
+clashoff() {
+    sudo ip route replace default via 192.168.86.1 dev wlan0
+    echo "默认路由已切换至 192.168.86.1 (wlan0)"
+}
+{{- end }}
+
+# zprof

@@ -1,5 +1,7 @@
 # Dynamic theme colors
-config-file = ?"~/.config/omarchy/current/theme/ghostty.conf"
+config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
+
+config-file = ?"~/.config/ghostty/override.conf"
 
 # Font
 font-family = "JetBrainsMono Nerd Font"
@@ -37,37 +39,5 @@ keybind = super+control+shift+alt+arrow_right=resize_split:right,100
 # Slowdown mouse scrolling
 mouse-scroll-multiplier = 0.95
 
-# Shader
-custom-shader-animation        = always
-# custom-shader                  = shaders/animated-gradient-shader.glsl
-# custom-shader                  = shaders/bettercrt.glsl
-# custom-shader                  = shaders/bloom.glsl
-# custom-shader                  = shaders/cineShader-Lava.glsl
-# custom-shader                  = shaders/crt.glsl
-# custom-shader                  = shaders/cubes.glsl
-# custom-shader                  = shaders/cursor_blaze.glsl
-# custom-shader                  = shaders/dither.glsl
-# custom-shader                  = shaders/drunkard.glsl
-# custom-shader                  = shaders/fireworks-rockets.glsl
-# custom-shader                  = shaders/fireworks.glsl
-# custom-shader                  = shaders/galaxy.glsl
-# custom-shader                  = shaders/gears-and-belts.glsl
-# custom-shader                  = shaders/glitchy.glsl
-# custom-shader                  = shaders/glow-rgbsplit-twitchy.glsl
-# custom-shader                  = shaders/gradient-background.glsl
-# custom-shader                  = shaders/in-game-crt.glsl
-# custom-shader                  = shaders/inside-the-matrix.glsl
-# custom-shader                  = shaders/just-snow.glsl
-# custom-shader                  = shaders/matrix-hallway.glsl
-# custom-shader                  = shaders/mnoise.glsl
-# custom-shader                  = shaders/negative.glsl
-# custom-shader                  = shaders/retro-terminal.glsl
-# custom-shader                  = shaders/sin-interference.glsl
-# custom-shader                  = shaders/smoke-and-ghost.glsl
-# custom-shader                  = shaders/sparks-from-fire.glsl
-# custom-shader                  = shaders/spotlight.glsl
-# custom-shader                  = shaders/starfield-colors.glsl
-# custom-shader                  = shaders/starfield.glsl
-# custom-shader                  = shaders/tft.glsl
-# custom-shader                  = shaders/underwater.glsl
-# custom-shader                  = shaders/water.glsl
+# Fix general slowness on hyprland (https://github.com/ghostty-org/ghostty/discussions/3224)
+async-backend = epoll

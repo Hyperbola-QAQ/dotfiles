@@ -1,0 +1,153 @@
+# 检测当前 shell 类型
+_shell_name="${ZSH_VERSION:+zsh}"
+_shell_name="${_shell_name:-bash}"
+
+# 只在交互式 shell 中执行（避免在脚本或非交互环境中出错）
+if [[ $- == *i* ]]; then
+
+  # --- mise ---
+  if command -v mise &>/dev/null; then
+    if mise activate "$_shell_name" >/tmp/mise_init 2>/dev/null; then
+      eval "$(cat /tmp/mise_init)"
+    else
+      echo "mise: initialization failed" >&2
+    fi
+    rm -f /tmp/mise_init
+  fi
+
+  # --- starship ---
+  if command -v starship &>/dev/null; then
+    if [[ "$_shell_name" == "bash" ]]; then
+      # 清理残留的 readline 状态，避免异常退出后提示符出现伪影
+      __sanitize_prompt() { printf '\r\033[K'; }
+      # 先保存 starship 可能设置的前置命令（稍后重新组合）
+      _old_prompt_cmd="$PROMPT_COMMAND"
+    fi
+    if starship init "$_shell_name" >/tmp/starship_init 2>/dev/null; then
+      eval "$(cat /tmp/starship_init)"
+    else
+      echo "starship: initialization failed" >&2
+    fi
+    rm -f /tmp/starship_init
+
+    # 确保 sanitize 在 starship 渲染提示符前执行
+    if [[ "$_shell_name" == "bash" ]]; then
+      PROMPT_COMMAND="__sanitize_prompt${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+    fi
+  fi
+
+  # --- zoxide ---
+  if command -v zoxide &>/dev/null; then
+    if zoxide init "$_shell_name" >/tmp/zoxide_init 2>/dev/null; then
+      eval "$(cat /tmp/zoxide_init)"
+    else
+      echo "zoxide: initialization failed" >&2
+    fi
+    rm -f /tmp/zoxide_init
+  fi
+
+  # --- try (自定义工具) ---
+  if command -v try &>/dev/null; then
+    if try init ~/Work/tries >/tmp/try_init 2>/dev/null; then
+      eval "$(cat /tmp/try_init)"
+    else
+      echo "try: initialization failed" >&2
+    fi
+    rm -f /tmp/try_init
+  fi
+
+  # --- fzf ---
+  if command -v fzf &>/dev/null; then
+    # 优先使用 fzf 自带的初始化命令（fzf >= 0.48）
+    if fzf --"$_shell_name" >/tmp/fzf_init 2>/dev/null; then
+      eval "$(cat /tmp/fzf_init)"
+      rm -f /tmp/fzf_init
+    else
+      rm -f /tmp/fzf_init
+      # 回退到手动查找常见路径
+      if [[ "$_shell_name" == "bash" ]]; then
+        _fzf_dirs=(
+          /usr/share/fzf
+          /usr/share/doc/fzf/examples
+          /usr/local/share/fzf
+        )
+        for _dir in "${_fzf_dirs[@]}"; do
+          if [[ -f "$_dir/completion.bash" ]]; then
+            source "$_dir/completion.bash"
+          fi
+          if [[ -f "$_dir/key-bindings.bash" ]]; then
+            source "$_dir/key-bindings.bash"
+          fi
+        done
+      elif [[ "$_shell_name" == "zsh" ]]; then
+        _fzf_dirs=(
+          /usr/share/fzf
+          /usr/share/doc/fzf/examples
+          /usr/local/share/fzf
+        )
+        for _dir in "${_fzf_dirs[@]}"; do
+          if [[ -f "$_dir/completion.zsh" ]]; then
+            source "$_dir/completion.zsh"
+          fi
+          if [[ -f "$_dir/key-bindings.zsh" ]]; then
+            source "$_dir/key-bindings.zsh"
+          fi
+        done
+      fi
+      unset _fzf_dirs
+    fi
+  fi
+
+  unset _shell_name _old_prompt_cmd
+
+fi
+
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/hyperbola/.conda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/hyperbola/.conda/etc/profile.d/conda.sh" ]; then
+        . "/home/hyperbola/.conda/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/hyperbola/.conda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'mamba shell init' !!
+export MAMBA_EXE='/home/hyperbola/.conda/bin/mamba';
+export MAMBA_ROOT_PREFIX='/home/hyperbola/.conda';
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+fi
+unset __mamba_setup
+# <<< mamba initialize <<<
+
+
+if command -v thefuck &> /dev/null; then
+    eval $(thefuck --alias)
+fi
+
+if command -v uv &> /dev/null; then
+    eval "$(uv generate-shell-completion zsh)"
+fi
+
+if command -v yazi &> /dev/null; then
+    function y() {
+        local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+        yazi "$@" --cwd-file="$tmp"
+        IFS= read -r -d '' cwd < "$tmp"
+        [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+        rm -f -- "$tmp"
+    }
+fi

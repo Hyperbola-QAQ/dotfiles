@@ -1,0 +1,13 @@
+-- Extra autostart processes.
+-- o.launch_on_start("my-service")
+
+-- DPI 设置（使用 GDK_SCALE 计算）
+-- o.launch_on_start("sh -c 'dpi=$(awk \"BEGIN {print (${GDK_SCALE:-1}) * 96}\"); echo \"Xft.dpi: $dpi\" | xrdb -merge'")
+
+{{- if eq .chezmoi.hostname "HyQAQPC" }}
+o.launch_on_start("sleep 5 && docker ps")
+
+o.launch_on_start("sleep 5 && gtk-launch qq.desktop")
+o.launch_on_start("sleep 12 && gtk-launch wechat.desktop")
+o.launch_on_start("sleep 12 && gtk-launch steam.desktop")
+{{- end }}
