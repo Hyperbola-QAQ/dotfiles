@@ -4,14 +4,14 @@
 .DS_Store
 *.log
 
-# 如果主机名是 HyQAQPC
-{{- if eq .chezmoi.hostname "HyQAQPC" }}
+# 如果主机名是 HyQAQ-PC
+{{- if eq .chezmoi.hostname "HyQAQ-PC" }}
 .config/omarchy/current/
 .config/omarchy/current/*
 {{- end }}
 
-# 如果主机名是 HyQAQLaptop
-{{- if eq .chezmoi.hostname "HyQAQLaptop" }}
+# 如果主机名是 HyQAQ-Laptop
+{{- if eq .chezmoi.hostname "HyQAQ-Laptop" }}
 .config/omarchy/current/
 .config/omarchy/current/*
 {{- end }}
