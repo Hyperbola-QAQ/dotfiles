@@ -167,8 +167,10 @@
       "text": "echo $(( ($(date +%s) - $(stat -c %W / 2>/dev/null || stat -f %B / 2>/dev/null)) / 86400 )) days"
       {{- else if eq .chezmoi.hostname "HyQAQ-Imini" }}
       "text": "echo $(( ($(date +%s) - $(date -d '2025-08-15' +%s)) / 86400 )) days"
+      {{- else if eq .chezmoi.hostname "HyQAQ-Oldsrv" }}
+      "text": "echo $(( ($(date +%s) - $(date -d '2020-07-14' +%s)) / 86400 )) days"
       {{- else }}
-      "text": "echo $(( ($(date +%s) - $(date -d '2025-08-22' +%s)) / 86400 )) days"
+      "text": "echo $(( ($(date +%s) - $(stat -c %W / 2>/dev/null || stat -f %B / 2>/dev/null)) / 86400 )) days"
       {{- end }}
     },
     {
