@@ -2,7 +2,7 @@
 -- List current monitors and supported resolutions with: hyprctl monitors all
 
 
-{{- if eq .chezmoi.hostname "HyQAQ-PC" }}
+{{- if eq .chezmoi.hostname "hyqaq-pc" }}
 
 local omarchy_gdk_scale = 2
 local omarchy_monitor_scale = 1.6
@@ -42,7 +42,7 @@ hl.workspace_rule({ workspace = "10", monitor = "HDMI-A-2" })
 hl.workspace_rule({ workspace = "11", monitor = "HDMI-A-2" })
 {{- end }}
 
-{{- if eq .chezmoi.hostname "HyQAQ-Laptop" }}
+{{- if eq .chezmoi.hostname "hyqaq-laptop" }}
 local omarchy_gdk_scale = 2
 local omarchy_monitor_scale = "auto"
 

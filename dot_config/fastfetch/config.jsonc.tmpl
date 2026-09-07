@@ -1,11 +1,11 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
-    {{- if eq .chezmoi.hostname "HyQAQ-PC" }}
+    {{- if eq .chezmoi.hostname "hyqaq-pc" }}
     "type": "kitty",
     "source": "/home/hyperbola/Pictures/Logo/logo_5_transparent.png",
     "height": 25,
-    {{- else if eq .chezmoi.hostname "HyQAQ-Laptop" }}
+    {{- else if eq .chezmoi.hostname "hyqaq-laptop" }}
     "type": "kitty",
     "source": "/home/hyperbola/Pictures/Logo/logo_6_transparent.png",
     "height": 22,
@@ -159,15 +159,15 @@
       "type": "command",
       "key": "󱦟 OS Age",
       "keyColor": "magenta",
-      {{- if eq .chezmoi.hostname "HyQAQ-Laptop" }}
+      {{- if eq .chezmoi.hostname "hyqaq-laptop" }}
       "text": "echo $(( ($(date +%s) - $(date -d '2025-08-22' +%s)) / 86400 )) days"
-      {{- else if eq .chezmoi.hostname "HyQAQ-PC" }}
+      {{- else if eq .chezmoi.hostname "hyqaq-pc" }}
       "text": "echo $(( ($(date +%s) - $(date -d '2024-09-05' +%s)) / 86400 )) days"
-      {{- else if eq .chezmoi.hostname "HyQAQ-Laiku" }}
+      {{- else if eq .chezmoi.hostname "hyqaq-laiku" }}
       "text": "echo $(( ($(date +%s) - $(stat -c %W / 2>/dev/null || stat -f %B / 2>/dev/null)) / 86400 )) days"
-      {{- else if eq .chezmoi.hostname "HyQAQ-Imini" }}
+      {{- else if eq .chezmoi.hostname "hyqaq-imini" }}
       "text": "echo $(( ($(date +%s) - $(date -d '2025-08-15' +%s)) / 86400 )) days"
-      {{- else if eq .chezmoi.hostname "HyQAQ-Oldsrv" }}
+      {{- else if eq .chezmoi.hostname "hyqaq-oldsrv" }}
       "text": "echo $(( ($(date +%s) - $(date -d '2020-07-14' +%s)) / 86400 )) days"
       {{- else }}
       "text": "echo $(( ($(date +%s) - $(stat -c %W / 2>/dev/null || stat -f %B / 2>/dev/null)) / 86400 )) days"
