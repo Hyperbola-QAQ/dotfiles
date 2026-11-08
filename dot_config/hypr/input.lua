@@ -65,3 +65,12 @@ hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 -- Enable touchpad gestures for moving focus (helpful on scrolling layout).
 -- hl.gesture({ fingers = 3, direction = "left", action = function() hl.dispatch(hl.dsp.focus({ direction = "l" })) end })
 -- hl.gesture({ fingers = 3, direction = "right", action = function() hl.dispatch(hl.dsp.focus({ direction = "r" })) end })
+
+-- EWEADN mouse (a8a5:2255) exposes 3 extra HID keyboard interfaces whose
+-- pressed-key state goes stale. Hyprland merges key state across all keyboards
+-- (shareKeyFromAllKBs, v0.51.0+), so a stale entry there makes the real keyboard
+-- lose same-key events -- symptom: first key after CapsLock toggle is swallowed.
+-- Disable only those interfaces; the mouse is a separate pointing device.
+hl.device({ name = "yjx-chip-eweadn-e7", enabled = false })
+hl.device({ name = "yjx-chip-eweadn-e7-keyboard", enabled = false })
+hl.device({ name = "yjx-chip-eweadn-e7-1", enabled = false })

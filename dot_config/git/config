@@ -210,3 +210,9 @@
 [user]
 	name = Hyperbola_QAQ
 	email = 2656131980@qq.com
+[credential "https://github.com"]
+	helper = 
+	helper = !/home/hyperbola/.local/share/mise/shims/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/home/hyperbola/.local/share/mise/shims/gh auth git-credential

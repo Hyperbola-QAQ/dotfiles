@@ -2,7 +2,7 @@
 -- o.launch_on_start("my-service")
 
 -- DPI 设置（使用 GDK_SCALE 计算）
--- o.launch_on_start("sh -c 'dpi=$(awk \"BEGIN {print (${GDK_SCALE:-1}) * 96}\"); echo \"Xft.dpi: $dpi\" | xrdb -merge'")
+-- o.launch_on_start("sh -c 'dpi=$(awk \"BEGIN {print (${GDK_SCALE:-1}) * 96}\"); echo \"Xft.dpi: $dpi\" | xrdb -merge'\"")
 
 {{- if eq .chezmoi.hostname "hyqaq-pc" }}
 o.launch_on_start("sleep 5 && docker ps")
@@ -10,4 +10,12 @@ o.launch_on_start("sleep 5 && docker ps")
 o.launch_on_start("sleep 5 && gtk-launch qq.desktop")
 o.launch_on_start("sleep 12 && gtk-launch wechat.desktop")
 o.launch_on_start("sleep 12 && gtk-launch steam.desktop")
+o.launch_on_start("activate-linux -p 'm$'")
+
+-- o.launch_on_start("linux-wallpaperengine --silent --screen-root HDMI-A-1 --disable-parallax --disable-mouse --fps 30 --bg 3714466840")
+-- o.launch_on_start("linux-wallpaperengine --silent --screen-root HDMI-A-2 --disable-parallax --disable-mouse --fps 30 --bg 3669681034")
+{{- end }}
+
+{{- if eq .chezmoi.hostname "hyqaq-laptop" }}
+o.launch_on_start("activate-linux -p 'm$'")
 {{- end }}

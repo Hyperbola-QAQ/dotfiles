@@ -5,20 +5,28 @@
 {{- if eq .chezmoi.hostname "hyqaq-pc" }}
 
 local omarchy_gdk_scale = 2
-local omarchy_monitor_scale = 1.6
+local omarchy_monitor_scale = 2
 
 hl.env("GDK_SCALE", tostring(omarchy_gdk_scale))
 -- hl.monitor({ output = "", mode = "preferred", position = "auto", scale = omarchy_monitor_scale })
 
--- 主屏幕：2560x1440 @ 100Hz，分配工作区 1-7
+-- 主屏幕：2560x1440 @ 100Hz（工作区区块 1-10，由 Omarchy 4.5 的每屏区块自动分配）
+-- 广色域关闭说明：
+-- KTC H27T13 官网规格为「色深 8bit / 16.7M 色」，面板本身不支持 10bit。
+-- 其 EDID 为过 HDR10 认证声明了 BT2020RGB + SMPTE ST2084，Hyprland 据此开启 WCG 渲染，
+-- 但实际输出恒为 XRGB8888（8bit），两者不一致会触发
+-- "wide color gamut is enabled but the display is not in 10-bit mode" 警告。
+-- 另外 1440p@100 的像素时钟已顶满 EDID 声明的 400MHz TMDS 字符率上限，
+-- 10bit 需要 500MHz，物理上跑不了。故此处强制关闭广色域检测。
 hl.monitor({
     output = "HDMI-A-1",        -- 请替换为你的主屏幕实际输出名
     mode = "2560x1440@100", -- 设置分辨率和刷新率
     position = "0x0",       -- 位于虚拟布局的起点
     scale = 1.67,
+    supports_wide_color = -1, -- -1=强制不支持广色域（0=按EDID自动，1=强制支持）
 })
 
--- 副屏幕：1920x1080 @ 75Hz，分配工作区 8+
+-- 副屏幕：1920x1080 @ 75Hz（工作区区块 11-20）
 hl.monitor({
     output = "HDMI-A-2",        -- 请替换为你的副屏幕实际输出名
     mode = "1920x1080@75",  -- 设置分辨率和刷新率
@@ -26,23 +34,16 @@ hl.monitor({
     scale = 1,
 })
 
--- 工作区 1-7 绑定到主屏幕 (HDMI-A-1)
-hl.workspace_rule({ workspace = "1", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "2", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "3", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "4", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "5", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "6", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "7", monitor = "HDMI-A-1" })
+-- 不再手工绑定「工作区 → 显示器」。
+-- Omarchy 4.5 起每块显示器自带 10 个工作区的区块（主屏 1-10、副屏 11-20），
+-- 由 default/hypr/monitor-workspaces.lua 按显示器 make/model/serial 分配并记住，
+-- 状态在 ~/.local/state/omarchy/monitor-workspaces。手写 workspace_rule 会和它抢，
+-- 反而让 Super+数字 在副屏上跳回主屏。
 
--- 工作区 8-10 绑定到副屏幕 (HDMI-A-2)
-hl.workspace_rule({ workspace = "8", monitor = "HDMI-A-2" })
-hl.workspace_rule({ workspace = "9", monitor = "HDMI-A-2" })
-hl.workspace_rule({ workspace = "10", monitor = "HDMI-A-2" })
-hl.workspace_rule({ workspace = "11", monitor = "HDMI-A-2" })
 {{- end }}
 
 {{- if eq .chezmoi.hostname "hyqaq-laptop" }}
+
 local omarchy_gdk_scale = 2
 local omarchy_monitor_scale = "auto"
 
@@ -57,3 +58,24 @@ hl.monitor({ output = "", mode = "preferred", position = "auto", scale = omarchy
 
 -- Portrait/rotated secondary monitor (transform: 1 = 90°, 3 = 270°).
 -- hl.monitor({ output = "DP-2", mode = "preferred", position = "auto", scale = 1, transform = 1 })
+
+{{- if eq .chezmoi.hostname "hyqaq-pc" }}
+
+-- ============================================
+-- 采集卡热插拔后修复 X 侧的 primary output
+-- ============================================
+-- 主屏挂在 A/Vaux GC553G2 采集盒后面，采集盒每次重新协商 HDMI 都会触发热插拔，
+-- xwayland 重建输出后 X 的 primary output 会悬空，Wine/Proton 因此判定不出主屏，
+-- 游戏可能把 1080p 的副屏当成运行屏幕。脚本内含等待与重试，见 apps/fix-x-primary.sh。
+local fix_x_primary = "bash " .. os.getenv("HOME") .. "/.config/hypr/apps/fix-x-primary.sh"
+
+hl.on("monitor.added", function() hl.dispatch(hl.dsp.exec_cmd(fix_x_primary)) end)
+hl.on("monitor.removed", function() hl.dispatch(hl.dsp.exec_cmd(fix_x_primary)) end)
+hl.on("monitor.layout_changed", function() hl.dispatch(hl.dsp.exec_cmd(fix_x_primary)) end)
+
+-- 兜底：热插拔事件没赶上时，任何新窗口打开（典型是游戏启动）都再确认一次。
+-- 脚本有快路径，primary 正常时直接退出，不会带来可感知开销。
+hl.on("window.open", function()
+  hl.dispatch(hl.dsp.exec_cmd(fix_x_primary))
+end)
+{{- end }}
