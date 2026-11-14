@@ -1,0 +1,4 @@
+[settings]
+not_found_auto_install = false
+
+[settings.upgrade]
