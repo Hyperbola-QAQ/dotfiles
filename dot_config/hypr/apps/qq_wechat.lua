@@ -149,7 +149,9 @@ end
 
 -- 窗口比区域大时先缩，再挪。resize 会以中心为锚把窗口带走，
 -- 所以顺序必须是 resize → move。
-local function fit_into(addr, a, w, h, x, y)
+-- cx/cy 是窗口当前左上角：比对"现在在哪"而不是"想放哪"，
+-- 否则位置没被夹取时这里会误判成"已经在目标位置"，move 永远发不出去。
+local function fit_into(addr, a, w, h, x, y, cx, cy)
     if not a then return end
     local nw = (w > a.w) and a.w or w
     local nh = (h > a.h) and a.h or h
@@ -160,7 +162,7 @@ local function fit_into(addr, a, w, h, x, y)
     end
     local nx = math.max(a.x, math.min(x, a.x + a.w - nw))
     local ny = math.max(a.y, math.min(y, a.y + a.h - nh))
-    if nx ~= x or ny ~= y then
+    if nx ~= cx or ny ~= cy then
         pcall(function()
             hl.dispatch(hl.dsp.window.move({ x = nx, y = ny, window = addr }))
         end)
@@ -320,7 +322,7 @@ local function ensure_inside(win, tag, force)
     end
     drift[win.address] = nil
 
-    fit_into(target_of(win), a, w, h, x, y)
+    fit_into(target_of(win), a, w, h, x, y, x, y)
     log_place(tag, win, string.format(" %dx%d @%d,%d -> %dx%d @%d,%d",
         w, h, x, y, math.min(w, a.w), math.min(h, a.h),
         math.max(a.x, math.min(x, a.x + a.w - math.min(w, a.w))),
@@ -393,6 +395,34 @@ local function is_social_popup(win)
     return t:match(MAIN_TITLES[win.class]) == nil
 end
 
+-- 弹窗落位：以光标为锚，四个象限里挑一个"能完整放下"的方向，光标本身不被盖住。
+-- 优先右下（资料卡、图片查看器多数指向左上方的东西），放不下就依次试左下、右上、左上；
+-- 四个方向都放不下（窗口比屏幕还大、或光标贴角落）时，取偏移最小的那个夹回屏幕内。
+local CURSOR_GAP = 12
+
+local function popup_origin(a, w, h, px, py)
+    local cands = {
+        { px + CURSOR_GAP, py + CURSOR_GAP },
+        { px - w - CURSOR_GAP, py + CURSOR_GAP },
+        { px + CURSOR_GAP, py - h - CURSOR_GAP },
+        { px - w - CURSOR_GAP, py - h - CURSOR_GAP },
+    }
+    for _, c in ipairs(cands) do
+        if c[1] >= a.x and c[2] >= a.y
+            and c[1] + w <= a.x + a.w and c[2] + h <= a.y + a.h then
+            return c[1], c[2]
+        end
+    end
+    local bx, by, bd
+    for _, c in ipairs(cands) do
+        local x = math.max(a.x, math.min(c[1], a.x + a.w - w))
+        local y = math.max(a.y, math.min(c[2], a.y + a.h - h))
+        local d = math.abs(x - c[1]) + math.abs(y - c[2])
+        if not bd or d < bd then bx, by, bd = x, y, d end
+    end
+    return bx, by
+end
+
 local function place_popup(win, tag)
     local okp, p = pcall(hl.get_cursor_pos)
     if not okp or not p then
@@ -400,13 +430,22 @@ local function place_popup(win, tag)
     end
     -- 先确保是浮动窗口：平铺窗口 move 是空操作。
     hl.dispatch(hl.dsp.window.float({ action = "on", window = target_of(win) }))
-    local w, h = geometry_of(win)
-    local x = math.floor(p.x) - 30
-    local y = math.floor(p.y) - 30
     local a = area_for(win)
-    fit_into(target_of(win), a, w, h, x, y)
-    log_place(tag, win, string.format(" size=%dx%d cursor=%d,%d", w, h,
-        math.floor(p.x), math.floor(p.y)))
+    if not a then return end
+    local w, h, cx, cy = geometry_of(win)
+    if w <= 0 or h <= 0 then return end
+    w, h = math.min(w, a.w), math.min(h, a.h)
+    local px, py = math.floor(p.x), math.floor(p.y)
+    local x, y
+    if px >= a.x and px <= a.x + a.w and py >= a.y and py <= a.y + a.h then
+        x, y = popup_origin(a, w, h, px, py)
+    else
+        -- 光标在别的显示器上：居中放着，别硬贴到这块屏的边缘
+        x = a.x + math.floor((a.w - w) / 2)
+        y = a.y + math.floor((a.h - h) / 2)
+    end
+    fit_into(target_of(win), a, w, h, x, y, cx, cy)
+    log_place(tag, win, string.format(" size=%dx%d cursor=%d,%d -> %d,%d", w, h, px, py, x, y))
 end
 
 hl.on("window.open", function(win)
